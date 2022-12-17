@@ -44,3 +44,38 @@ The map is in an early stage and is currently hard-coded to only show units of t
 
 ## License
 The project itself is licensed under the GPLv3 or later. For third-party components (node.js and npm modules, the map icons, anything under `src/bower_components` and `src/vendor_js`), the licensing information can be found in the respective subdirectories or in the source file itself.
+
+##Notes from BuzzKillington
+I had to modify the node.js to support the latest version of JS from microsoft. It appears the commands for network stuff changed, you can see
+the change log for details.  I also had to do these things to get it to work in window10, they are outlined in the witchcraft.cmd script as well
+
+cd ..\src
+rem call ..\windows\nodejs\npm.cmd --spin=false --loglevel=info install
+rem ..\windows\nodejs\node backend\server.js
+call C:\"Program Files"\nodejs\npm.cmd --spin=false --loglevel=info install
+C:\"Program Files"\nodejs\node backend\server.js
+rem start http://localhost:3000/
+pause
+REM had to run install as admin to get the packages.
+rem npm init
+rem then the install
+rem then npm.cmd install network.io
+rem edited the file var io = require('socket.io')(port,"0.0.0.0");
+
+
+Once you have this running you should get a terminal that says waiting for dcs.  You need to add the withcraftExport.lua to the scripts folder and add it to your 
+dofile(lfs.writedir()..[[Scripts\WitchcraftExport.lua]])
+
+exports or else you will get error like "[string "1671248087514"]:2: attempt to call global 'list_indication' (a nil value) when you try to do anything
+
+##running notes
+So you ahve the terminal running, you start DCS and get into a  plane.  You should see DCS connected message.
+Now in a web browser goto http://localhost:3000/console.html#
+
+From this terminal you can issue lua commands directly into running DCS.
+I use this to diagnose DCSbios. Basicly you can issue direct bio calls (Copy in the function calls) or read out other things
+
+Try this "return list_indication(6)"
+On F16 you will get the current DED text!!
+
+Hope this helps!

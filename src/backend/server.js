@@ -1,13 +1,17 @@
 var express = require('express');
 var app = express();
 var port = 3000;
-var io = require('socket.io').listen(app.listen(port, "0.0.0.0"));
+var server = require('http').createServer(app); //chris
+var io = require('socket.io')(server);
+server.listen(process.env.PORT || 3000);
+//var io = require('socket.io');.listen(app.listen(port, "0.0.0.0"));
 var Q = require('q');
 var net = require('net');
 var events = require('events');
 var _ = require("lodash");
 var appevents = new events.EventEmitter();
 var assert = require("assert");
+const { listen } = require('express/lib/application');
 var Graph = require("data-structures").Graph;
 
 var missionModel = require("../common/missionmodel.js").makeMM();
